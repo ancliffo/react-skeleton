@@ -1,21 +1,40 @@
-
-import { Routes, Route, Link } from 'react-router-dom';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import { Nav } from './Nav';
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
+import '@mantine/core/styles.css';
+import { Box, Container, MantineProvider } from '@mantine/core';
+import { ColorSchemeProvider, useColorScheme } from './assets/contexts/ColorSchemeContext';
 
 export default function App() {
   return (
-    <>
-      <nav style={{ marginBottom: 20 }}>
-        <Link to="/" style={{ marginRight: 10 }}>Home</Link>
-        <Link to="/about-us">About Us</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about-us" element={<AboutUs />} />
-      </Routes>
-    </>
+    <ColorSchemeProvider>
+      <AppWithTheme />
+    </ColorSchemeProvider>
   );
 }
 
+function AppWithTheme() {
+  const { colorScheme } = useColorScheme();
+  return (
+    <MantineProvider theme={{ colorScheme } as any}>
+      <Container
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'min-content auto',
+          minHeight: '100vh',
+        }}
+      >
+        <Box>
+          <Nav />
+        </Box>
+        <Box p="md">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about-us" element={<AboutUs />} />
+          </Routes>
+        </Box>
+      </Container>
+    </MantineProvider>
+  );
+}
