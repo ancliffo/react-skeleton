@@ -12,10 +12,10 @@ export function useGetDogFact() {
   return useQuery({
     queryKey: ['dogFact'],
     queryFn: async () => {
-      const res = await fetch('https://dogapi.dog/api/v2/facts?limit=1');
+      const res = await fetch('https://dog.ceo/api/breeds/image/random');
       if (!res.ok) throw new Error('Network response was not ok');
       const data = await res.json();
-      return data.data as DogFact[];
+      return data.message as string;
     },
   });
 }
