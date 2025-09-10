@@ -4,20 +4,15 @@ import { useGetDogFact } from '../hooks/useGetDogFact';
 const Home: React.FC = () => {
   const { data, isLoading, error } = useGetDogFact();
 
-  let factBody = '';
-  if (data && data.length > 0) {
-    factBody = data[0].attributes.body;
-  }
-
   return (
     <div>
-      <h1>Home Page</h1>
-      <p>Welcome to the home page!</p>
+      <h1>Dog Page</h1>
+      <h2>Go away  to the home page!</h2>
       <div style={{ marginTop: 20 }}>
-        <h2>Dog Fact</h2>
+        <h3>Random Dog Image</h3>
         {isLoading && <p>Loading...</p>}
-        {error && <p>Error loading dog fact.</p>}
-        {!isLoading && !error && <p>{factBody}</p>}
+        {error && <p>Error loading dog image.</p>}
+        {!isLoading && !error && <img src={data} alt="Random Dog" />}
       </div>
     </div>
   );

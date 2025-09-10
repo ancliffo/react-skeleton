@@ -18,7 +18,7 @@ import { useColorScheme } from './assets/contexts/ColorSchemeContext';
 const data = [
   { link: '/', label: 'Home', icon: IconHome2 },
   { link: '/about-us', label: 'About Us', icon: IconBuilding },
-  { link: '', label: 'Account', icon: IconUser },
+  { link: '/demo', label: 'Demo', icon: IconUser },
   { link: '', label: 'Analytics', icon: IconDeviceDesktopAnalytics },
   { link: '', label: 'Settings', icon: IconSettings }
 ];
