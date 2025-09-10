@@ -8,9 +8,9 @@ export interface DogFact {
   };
 }
 
-export function useGetDogFact() {
-  return useQuery({
-    queryKey: ['dogFact'],
+export function useGetDogFact(count: number = 0) {
+  return useQuery({ 
+    queryKey: ['dogFact', count],
     queryFn: async () => {
       const res = await fetch('https://dog.ceo/api/breeds/image/random');
       if (!res.ok) throw new Error('Network response was not ok');
