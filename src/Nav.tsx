@@ -1,82 +1,111 @@
-import { useState, useContext } from 'react';
-import {
-    IconHome2,
-    IconBuilding,
-    IconLogout,
-    IconSettings,
-    IconSwitchHorizontal,
-    IconUser,
-    IconDeviceDesktopAnalytics,
-    IconSun,
-    IconMoon
-} from '@tabler/icons-react';
-import { Code, Group, ActionIcon } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import classes from './Nav.module.css';
+import {
+  Drawer,
+  Toolbar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListItemButton,
+  IconButton,
+  Typography,
+  Divider,
+} from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import BusinessIcon from '@mui/icons-material/Business';
+import PersonIcon from '@mui/icons-material/Person';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useColorScheme } from './assets/contexts/ColorSchemeContext';
 
-const data = [
-  { link: '/', label: 'Home', icon: IconHome2 },
-  { link: '/about-us', label: 'About Us', icon: IconBuilding },
-  { link: '/demo', label: 'Demo', icon: IconUser },
-  { link: '', label: 'Analytics', icon: IconDeviceDesktopAnalytics },
-  { link: '', label: 'Settings', icon: IconSettings }
+const navItems = [
+  { link: '/', label: 'Home', icon: <HomeIcon /> },
+  { link: '/about-us', label: 'About Us', icon: <BusinessIcon /> },
+  { link: '/demo', label: 'Demo', icon: <PersonIcon /> },
+  { link: '', label: 'Analytics', icon: <BarChartIcon /> },
+  { link: '', label: 'Settings', icon: <SettingsIcon /> },
 ];
 
-export function Nav() {
-  const [active, setActive] = useState('Home');
+export function Nav(props: { handleDrawerToggle: () => void, mobileOpen: boolean, drawerWidth: number }) {
   const { colorScheme, toggleColorScheme } = useColorScheme();
 
-  const links = data.map((item) => (
-    <Link
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      to={item.link}
-      key={item.label}
-      onClick={() => {
-        setActive(item.label);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </Link>
-  ));
+  const drawer = (
+    <div>
+      <Toolbar>
+        <Typography variant="h6" noWrap>
+          Logo Here
+        </Typography>
+      </Toolbar>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItemButton
+            key={item.label}
+            component={Link}
+            to={item.link}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        <ListItemButton>
+          <ListItemIcon>
+            <SwitchAccountIcon />
+          </ListItemIcon>
+          <ListItemText primary="Change account" />
+        </ListItemButton>
+        <ListItemButton onClick={toggleColorScheme}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+        <ListItem>
+          <IconButton
+            color="inherit"
+            onClick={toggleColorScheme}
+            title="Toggle color scheme"
+          >
+            {colorScheme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </ListItem>
+      </List>
+    </div>
+  );
 
   return (
-    <nav className={classes.navbar}>
-      <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-          <h5>Logo Here</h5>
-          <Code fw={700}>v3.1.2</Code>
-        </Group>
-        {links}
-      </div>
-
-      <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
-
-        <a href="#" className={classes.link} onClick={toggleColorScheme}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
-
-        <ActionIcon
-            ml={'sm'} mt={'sm'}
-            variant="outline"
-            color={colorScheme === 'dark' ? 'yellow' : 'blue'}
-            onClick={() => toggleColorScheme()}
-            title="Toggle color scheme"
-            >
-            {colorScheme === 'dark' ? (
-                <IconMoon style={{ width: 18, height: 18 }} />
-            ) : (
-                <IconSun style={{ width: 18, height: 18 }} />
-            )}
-        </ActionIcon>
-      </div>
-    </nav>
+    <>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawerWidth },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+      <Drawer
+        variant="temporary"
+        open={props.mobileOpen}
+        onClose={props.handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: props.drawerWidth },
+        }}
+      >
+        {drawer}
+      </Drawer>
+    </>
   );
 }

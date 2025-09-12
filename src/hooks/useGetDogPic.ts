@@ -1,16 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
-export interface DogFact {
+export interface DogPic {
   id: string;
-  type: string;
-  attributes: {
-    body: string;
-  };
+  url: string;
 }
 
-export function useGetDogFact(count: number = 0) {
+
+export function useGetDogPic(count: number = 0) {
   return useQuery({ 
-    queryKey: ['dogFact', count],
+    queryKey: ['dogPic', count],
     queryFn: async () => {
       const res = await fetch('https://dog.ceo/api/breeds/image/random');
       if (!res.ok) throw new Error('Network response was not ok');

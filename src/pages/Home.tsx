@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGetDogFact } from '../hooks/useGetDogFact';
+import { useGetDogPic } from '../hooks/useGetDogPic';
 
 const Home: React.FC = () => {
-  const { data, isLoading, error } = useGetDogFact();
+  const { data, isLoading, error } = useGetDogPic();
 
   return (
     <div>
@@ -12,7 +12,7 @@ const Home: React.FC = () => {
         <h3>Random Dog Image</h3>
         {isLoading && <p>Loading...</p>}
         {error && <p>Error loading dog image.</p>}
-        {!isLoading && !error && <img src={data} alt="Random Dog" />}
+        {!isLoading && !error && <img style={{ maxWidth: 500 }} src={data} alt="Random Dog" />}
       </div>
     </div>
   );
