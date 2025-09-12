@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetDogPic } from '../hooks/useGetDogPic';
+import { useGetDogPic } from '../../hooks/useGetDogPic';
 
 const Home: React.FC = () => {
   const { data, isLoading, error } = useGetDogPic();
@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <h1>Dog Page</h1>
-      <h2>Go away  to the home page!</h2>
+      <h2>Welcome to the home page!</h2>
       <div style={{ marginTop: 20 }}>
         <h3>Random Dog Image</h3>
         {isLoading && <p>Loading...</p>}

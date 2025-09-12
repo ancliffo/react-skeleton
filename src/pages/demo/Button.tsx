@@ -8,7 +8,7 @@ const Button: React.FC<{
     
     return (
         <button onClick={() => handleClick(title.toLowerCase() === 'increment' ? 'increment' : 'decrement')}
-        className="increment-button" style={{ color: 'white', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: '5px' }}>
+        className="increment-button" style={{ backgroundColor: 'black', color: 'white', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: '5px' }}>
             {icon}
             <span>{title}</span>
         </button>

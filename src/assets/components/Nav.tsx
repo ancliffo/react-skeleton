@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import {
   Drawer,
   Toolbar,
@@ -20,7 +20,7 @@ import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useColorScheme } from './assets/contexts/ColorSchemeContext';
+import { useColorScheme } from '../contexts/ColorSchemeContext';
 
 const navItems = [
   { link: '/', label: 'Home', icon: <HomeIcon /> },

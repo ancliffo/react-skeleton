@@ -1,6 +1,7 @@
+// This is the root layout component for TanStack Router
 import { useState } from 'react';
 import { Outlet } from '@tanstack/react-router';
-import { Nav } from './assets/components/Nav';
+import { Nav } from '../assets/components/Nav';
 import {
   ThemeProvider, 
   CssBaseline, 
@@ -12,7 +13,7 @@ import {
   Box
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ColorSchemeProvider, useColorScheme } from './assets/contexts/ColorSchemeContext';
+import { ColorSchemeProvider, useColorScheme } from '../assets/contexts/ColorSchemeContext';
 
 export default function App() {
   return (
