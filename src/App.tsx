@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Outlet } from "@tanstack/react-router";
-import { Nav } from "./assets/components/Nav";
+import { useState } from 'react';
+import { Outlet } from '@tanstack/react-router';
+import { Nav } from './assets/components/Nav';
 import {
   ThemeProvider,
   CssBaseline,
@@ -10,9 +10,9 @@ import {
   IconButton,
   Typography,
   Box,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { ColorSchemeProvider, useColorScheme } from "./assets/contexts/ColorSchemeContext";
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { ColorSchemeProvider, useColorScheme } from './assets/contexts/ColorSchemeContext';
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ function AppWithTheme() {
   const { colorScheme } = useColorScheme();
   const theme = createTheme({
     palette: {
-      mode: colorScheme || "light",
+      mode: colorScheme || 'light',
     },
   });
   const handleDrawerToggle = (): void => {
@@ -39,10 +39,10 @@ function AppWithTheme() {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: "min-content 1fr",
-          minHeight: "100vh",
-          alignItems: "start",
+          display: 'grid',
+          gridTemplateColumns: 'min-content 1fr',
+          minHeight: '100vh',
+          alignItems: 'start',
         }}
       >
         <CssBaseline />
@@ -59,7 +59,7 @@ function AppWithTheme() {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
