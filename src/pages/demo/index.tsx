@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Button from './Button';
 import ListItem from './ListItem';
+import Stopwatch from './Stopwatch';
 import { IconPlus } from '@tabler/icons-react';
 import { IconMinus } from '@tabler/icons-react';
 import { useGetDogPic } from '../../hooks/useGetDogPic';
@@ -39,20 +40,26 @@ const Demo: React.FC = () => {
     <div>
       <div>
         <h1>{title}</h1>
-        <h2>Current Count: {count}</h2>
-        <Button
-          handleClick={handleButtonClick}
-          title="Increment"
-          icon={<IconPlus style={{ marginRight: '4px' }} />}
-        />
-        <Button
-          handleClick={handleButtonClick}
-          title="Decrement"
-          icon={<IconMinus style={{ marginRight: '4px' }} />}
-        />
-        {isLoading && <p>Loading...</p>}
-        {error && <p>Error loading dog image.</p>}
-        {!isLoading && !error && <img style={{ maxWidth: 500 }} src={data} alt="Random Dog" />}
+        <div>
+          <Stopwatch />
+        </div>
+        <hr />
+        <div>
+          <h2>Current Count: {count}</h2>
+          <Button
+            handleClick={handleButtonClick}
+            title="Increment"
+            icon={<IconPlus style={{ marginRight: '4px' }} />}
+          />
+          <Button
+            handleClick={handleButtonClick}
+            title="Decrement"
+            icon={<IconMinus style={{ marginRight: '4px' }} />}
+          />
+          {isLoading && <p>Loading...</p>}
+          {error && <p>Error loading dog image.</p>}
+          {!isLoading && !error && <img style={{ maxWidth: 500 }} src={data} alt="Random Dog" />}
+        </div>
         <hr />
         <div style={{ maxWidth: '500px' }}>
           <h3>Items:</h3>
