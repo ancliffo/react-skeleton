@@ -9,5 +9,17 @@ export default defineConfig({
       target: 'react',
       autoCodeSplitting: true,
     }),
-    react()]
+    react()
+  ],
+  server: {
+    watch: {
+      ignored: [
+        '**/tests/**',
+        '**/test-results/**',
+        '**/playwright-report/**',
+        '**/blob-report/**',
+        '**/playwright/.cache/**'
+      ]
+    }
+  }
 })
