@@ -67,3 +67,29 @@ export default tseslint.config([
   },
 ])
 ```
+
+## Running Playwright Tests Locally
+### Install Playwright and Web Drivers
+```bash
+npm install
+npx playwright install
+```
+
+### Verify Base URL and Web Server Config in `playwright.config.ts`
+```ts
+baseURL: 'http://localhost:5173',
+```
+```ts
+webServer: {
+  command: 'npm run dev',
+  url: 'http://localhost:5173',
+  reuseExistingServer: !process.env.CI,
+},
+```
+
+### Run the Test Commands
+```bash
+npx playwright test
+# or alternatively
+npm run test:e2e
+```
