@@ -1,55 +1,38 @@
-import React, { useState, useEffect } from "react";
-import Button from "./Button";
-import { IconPlus } from "@tabler/icons-react";
-import { IconMinus } from "@tabler/icons-react";
+import React from "react";
+import { Button, Typography } from "@mui/material";
 import { useGetDogPic } from "../../hooks/useGetDogPic";
 
-const Demo: React.FC = () => {
-  const title = "Counter Page";
-  const [count, setCount] = useState(0);
-  const { data, isLoading, error } = useGetDogPic(count);
-
-  useEffect(() => {
-    console.log("Count changed to:", count);
-  }, [count]);
-
-  const handleButtonClick = (type: string) => {
-    if (type === "increment") {
-      setCount(count + 1);
-    } else {
-      if (count > 0) {
-        setCount(count - 1);
-      }
-    }
-  };
+/** Demo page that utilizes an API */
+const Home: React.FC = () => {
+  const { data, isLoading, error, refetch } = useGetDogPic();
 
   return (
-    <div>
-      <div>
-        <h1>{title}</h1>
-        <h2>Current Count: {count}</h2>
-        <Button
-          handleClick={handleButtonClick}
-          title="Increment"
-          icon={<IconPlus style={{ marginRight: "4px" }} />}
-        />
-        <Button
-          handleClick={handleButtonClick}
-          title="Decrement"
-          icon={<IconMinus style={{ marginRight: "4px" }} />}
-        />
-        {isLoading && <p>Loading...</p>}
-        {error && <p>Error loading dog image.</p>}
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <Typography variant="h1" fontSize={24}>
+        Dog Page
+      </Typography>
+      <div
+        style={{
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+          alignItems: "start",
+        }}
+      >
+        <Typography variant="h3" fontSize={18}>
+          Random Dog Image
+        </Typography>
+
+        {isLoading && <Typography>Loading...</Typography>}
+        {error && <Typography>Error loading dog image.</Typography>}
         {!isLoading && !error && <img style={{ maxWidth: 500 }} src={data} alt="Random Dog" />}
-        <hr />
-        <div>
-          <div>
-            <h3>Items:</h3>
-          </div>
-        </div>
+        <Button variant="contained" color="secondary" onClick={() => refetch()}>
+          Get New Dog
+        </Button>
       </div>
     </div>
   );
 };
 
-export default Demo;
+export default Home;

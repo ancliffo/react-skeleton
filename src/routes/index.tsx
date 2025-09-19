@@ -1,32 +1,30 @@
-
-import { createRootRoute, createRoute, Router } from '@tanstack/react-router';
-import App from './__root';
-import Home from '../pages/home/Home';
-import AboutUs from '../pages/about-us/AboutUs';
-import Demo from '../pages/demo';
+import { createRootRoute, createRoute, Router } from "@tanstack/react-router";
+import App from "../App";
+import Home from "../pages/home";
+import Demo from "../pages/demo";
 
 const rootRoute = createRootRoute({
-  component: App, // Or: () => <App />
+  component: App,
 });
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: "/",
   component: Home,
-});
-
-const aboutRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/about-us',
-  component: AboutUs,
+  loader: () => ({
+    breadcrumb: "Home",
+  }),
 });
 
 const demoRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/demo',
+  path: "/demo",
   component: Demo,
+  loader: () => ({
+    breadcrumb: "Demo",
+  }),
 });
 
 export const router = new Router({
-  routeTree: rootRoute.addChildren([homeRoute, aboutRoute, demoRoute]),
+  routeTree: rootRoute.addChildren([homeRoute, demoRoute]),
 });

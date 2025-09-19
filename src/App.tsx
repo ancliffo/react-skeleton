@@ -1,83 +1,65 @@
-import { useState } from "react";
 import { Outlet } from "@tanstack/react-router";
-import { Nav } from "./assets/components/Nav";
-import {
-  ThemeProvider,
-  CssBaseline,
-  createTheme,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Box,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { ColorSchemeProvider, useColorScheme } from "./assets/contexts/ColorSchemeContext";
+import { alpha } from "@mui/material/styles";
+import SideMenu from "./components/SideMenu";
+import AppNavbar from "./components/AppNavbar";
+import Header from "./components/Header";
+import Search from "./components/Search";
+import { CssBaseline, Toolbar, Stack, Box } from "@mui/material";
+import AppTheme from "./assets/theme/AppTheme";
+import ColorModeIconDropdown from "./assets/theme/ColorModeIconDropdown";
 
 export default function App() {
   return (
-    <ColorSchemeProvider>
-      <AppWithTheme />
-    </ColorSchemeProvider>
-  );
-}
-
-function AppWithTheme() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const drawerWidth = 240;
-  const { colorScheme } = useColorScheme();
-  const theme = createTheme({
-    palette: {
-      mode: colorScheme || "light",
-    },
-  });
-  const handleDrawerToggle = (): void => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "min-content 1fr",
-          minHeight: "100vh",
-          alignItems: "start",
-        }}
-      >
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            ml: { sm: `${drawerWidth}px` },
-          }}
+    <AppTheme>
+      <CssBaseline enableColorScheme />
+      <Box sx={{ display: "flex" }}>
+        <SideMenu />
+        <AppNavbar />
+        {/* Main content */}
+        <Box
+          component="main"
+          sx={(theme) => ({
+            flexGrow: 1,
+            backgroundColor: theme.vars
+              ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
+              : alpha(theme.palette.background.default, 1),
+            overflow: "auto",
+          })}
         >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+          <Stack
+            spacing={2}
+            sx={{
+              pb: 5,
+              mt: { xs: 8, md: 0 },
+            }}
+          >
+            <Toolbar
+              sx={(theme) => ({
+                background: theme.vars
+                  ? theme.vars.palette.background.paper
+                  : theme.palette.background.paper,
+                boxShadow: "0px 2px 8px -2px rgba(0,0,0,0.15)", // Bottom shadow
+                minHeight: 56,
+              })}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              v3.1.2
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Nav
-          handleDrawerToggle={handleDrawerToggle}
-          mobileOpen={mobileOpen}
-          drawerWidth={drawerWidth}
-        />
-        <Box component="main" sx={{ p: 2, marginLeft: { sm: `${drawerWidth}px` } }}>
-          <Toolbar /> {/* Spacer for AppBar */}
-          <Outlet />
+              <Stack
+                direction="row"
+                sx={{ gap: 2, width: "100%" }}
+                alignItems="center"
+                justifyContent={"space-between"}
+              >
+                <Search />
+                {/* Color mode icon at end */}
+                <ColorModeIconDropdown />
+              </Stack>
+            </Toolbar>
+            <Box sx={{ px: 4 }}>
+              <Header />
+              <Outlet />
+            </Box>
+          </Stack>
         </Box>
       </Box>
-    </ThemeProvider>
+    </AppTheme>
   );
 }
