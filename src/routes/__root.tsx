@@ -16,6 +16,7 @@ import {
   ListItemButton,
   ListItemText,
   Drawer,
+  Container,
 } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -120,10 +121,10 @@ function AppWithTheme() {
             {drawer}
           </Drawer>
         </nav>
-        <Box component="main" sx={{ p: 3 }}>
+        <Container maxWidth="lg" component="main" sx={{ my: 4 }}>
           <Toolbar />
           <Outlet />
-        </Box>
+        </Container>
       </Box>
     </ThemeProvider>
   );

@@ -12,13 +12,14 @@ import { FormDialog } from "./FormDialog";
 import SingleSelect from "../uiElements/controls/SingleSelect";
 import { DragDropGrid } from "./DragDropGrid";
 import * as apiUtils from "../../utilities/apiUtils";
+import { useQuery } from "@tanstack/react-query";
 import TextBoxSingle from "../uiElements/controls/TextBoxSingle";
 
 const Page: React.FC<PageContainerProps> = ({ pageId, apiPath }) => {
   const [pageInfo, setPageInfo] = useState<UI_PageSerializer | null>(null);
-  const [sectionAppearances, setSectionAppearances] = useState<UI_Section_AppearanceSerializer[]>(
-    [],
-  );
+  // const [sectionAppearances, setSectionAppearances] = useState<UI_Section_AppearanceSerializer[]>(
+  //   [],
+  // );
   const [sections, setSections] = useState<UI_SectionSerializer[] | null>(null);
   //this needs to be updated to use the serialized layout type:
   const [layout, setLayout] = useState<{ i: string; x: number; y: number; w: number; h: number }[]>(
@@ -62,6 +63,17 @@ const Page: React.FC<PageContainerProps> = ({ pageId, apiPath }) => {
   //   setOpen(false);
   // };
 
+  const {
+    data: sectionAppearances = [],
+    // isLoading: isLoadingSectionAppearances,
+    error: sectionAppearancesError,
+    refetch: getSectionAppearances,
+  } = useQuery({
+    queryKey: ["sectionAppearances", apiPath],
+    queryFn: () => apiUtils.getAPIInfo(`${apiPath}/api/section/appearance/`),
+    enabled: false, // Disable automatic query on mount
+  });
+
   console.log("Running in mode:", process.env.NODE_ENV);
   const hasFetched = useRef(false);
 
@@ -74,14 +86,21 @@ const Page: React.FC<PageContainerProps> = ({ pageId, apiPath }) => {
     getSectionAppearances();
   }, []);
 
-  const getSectionAppearances = async () => {
-    try {
-      const tempAppearances = await apiUtils.getAPIInfo(`${apiPath}/api/section/appearance/`);
-      setSectionAppearances(tempAppearances);
-    } catch (error) {
-      console.error("Error getting section appearances:", error);
+  useEffect(() => {
+    if (sectionAppearancesError) {
+      console.error("Error fetching section appearances:", sectionAppearancesError);
     }
-  };
+  }, [sectionAppearancesError]);
+
+  // Leaving this here so we can see how to use something like this in react-query
+  // const getSectionAppearances = async () => {
+  //   try {
+  //     const tempAppearances = await apiUtils.getAPIInfo(`${apiPath}/api/section/appearance/`);
+  //     setSectionAppearances(tempAppearances);
+  //   } catch (error) {
+  //     console.error("Error getting section appearances:", error);
+  //   }
+  // };
 
   function sectionCallback() {
     //Currently not implemented
