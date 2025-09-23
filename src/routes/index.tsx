@@ -1,9 +1,9 @@
-
-import { createRootRoute, createRoute, Router } from '@tanstack/react-router';
-import App from './__root';
-import Home from '../pages/home/Home';
-import AboutUs from '../pages/about-us/AboutUs';
-import Demo from '../pages/demo';
+import { createRootRoute, createRoute, Router } from "@tanstack/react-router";
+import App from "./__root";
+import Home from "../pages/home/Home";
+import AboutUs from "../pages/about-us/AboutUs";
+import Demo from "../pages/demo";
+import DndPage from "../pages/dnd";
 
 const rootRoute = createRootRoute({
   component: App, // Or: () => <App />
@@ -11,22 +11,28 @@ const rootRoute = createRootRoute({
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  path: "/",
   component: Home,
 });
 
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/about-us',
+  path: "/about-us",
   component: AboutUs,
 });
 
 const demoRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/demo',
+  path: "/demo",
   component: Demo,
 });
 
+const dndRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/dnd",
+  component: DndPage,
+});
+
 export const router = new Router({
-  routeTree: rootRoute.addChildren([homeRoute, aboutRoute, demoRoute]),
+  routeTree: rootRoute.addChildren([homeRoute, aboutRoute, demoRoute, dndRoute]),
 });
