@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
@@ -9,4 +11,7 @@ export default defineConfig({
     setupFiles: './src/tests/setupTests.ts',
     include: ['src/tests/**/*.test.tsx'],
   },
+  resolve: {
+    extensions: ['.js', '.ts', '.jsx', '.tsx'],
+  }
 });

@@ -1,7 +1,7 @@
 import { createRootRoute, createRoute, Router } from "@tanstack/react-router";
 import App from "./__root";
-import Home from "../pages/home/Home";
-import AboutUs from "../pages/about-us/AboutUs";
+import Home from "../pages/home";
+import AboutUs from "../pages/about-us";
 import Demo from "../pages/demo";
 import DndPage from "../pages/dnd";
 import TEPage from "../pages/te";
