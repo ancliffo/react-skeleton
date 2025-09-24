@@ -1,54 +1,58 @@
-import React, { useState, useEffect } from "react";
-import Button from "./Button";
-import { IconPlus } from "@tabler/icons-react";
-import { IconMinus } from "@tabler/icons-react";
-import { useGetDogPic } from "../../hooks/useGetDogPic";
+import { Box, Typography, List, ListItem, ListItemText, CircularProgress } from "@mui/material";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+
+// API function to fetch users
+const fetchUsers = async () => {
+  const response = await fetch("/api/users"); // Use proxy path instead
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+  return response.json();
+};
 
 const Demo: React.FC = () => {
-  const title = "Counter Page";
-  const [count, setCount] = useState(0);
-  const { data, isLoading, error } = useGetDogPic(count);
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsers,
+  });
 
-  useEffect(() => {
-    console.log("Count changed to:", count);
-  }, [count]);
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" p={2}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const handleButtonClick = (type: string) => {
-    if (type === "increment") {
-      setCount(count + 1);
-    } else {
-      if (count > 0) {
-        setCount(count - 1);
-      }
-    }
-  };
+  if (error) {
+    return (
+      <Box p={2}>
+        <Typography color="error">Error loading users: {error.message}</Typography>
+      </Box>
+    );
+  }
 
   return (
-    <div>
-      <div>
-        <h1>{title}</h1>
-        <h2>Current Count: {count}</h2>
-        <Button
-          handleClick={handleButtonClick}
-          title="Increment"
-          icon={<IconPlus style={{ marginRight: "4px" }} />}
-        />
-        <Button
-          handleClick={handleButtonClick}
-          title="Decrement"
-          icon={<IconMinus style={{ marginRight: "4px" }} />}
-        />
-        {isLoading && <p>Loading...</p>}
-        {error && <p>Error loading dog image.</p>}
-        {!isLoading && !error && <img style={{ maxWidth: 500 }} src={data} alt="Random Dog" />}
-        <hr />
-        <div>
-          <div>
-            <h3>Items:</h3>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Box p={2}>
+      <Typography variant="h4" gutterBottom>
+        Users
+      </Typography>
+      <List>
+        {users?.map((user: any, index: number) => (
+          <ListItem key={user.id || index} divider>
+            <ListItemText
+              primary={user.name || user.username || `User ${index + 1}`}
+              secondary={user.email || user.id}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 };
 

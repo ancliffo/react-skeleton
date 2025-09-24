@@ -1,5 +1,5 @@
-import React from 'react';
-import { useGetDogPic } from '../../hooks/useGetDogPic';
+import React from "react";
+import { useGetDogPic } from "../../hooks/useGetDogPic";
 
 const Home: React.FC = () => {
   const { data, isLoading, error } = useGetDogPic();
