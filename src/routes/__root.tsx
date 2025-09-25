@@ -9,17 +9,20 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  TextField,
   Typography,
   Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { ColorSchemeProvider } from "../contexts/ColorSchemeProvider";
 import { useColorScheme } from "../hooks/useColorScheme";
 
 function AppWithTheme() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerWidth = 240;
-  const { colorScheme } = useColorScheme();
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   const theme = createTheme({
     palette: {
       mode: colorScheme || "light",
@@ -47,7 +50,7 @@ function AppWithTheme() {
             ml: { sm: `${drawerWidth}px` },
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -58,8 +61,22 @@ function AppWithTheme() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              v3.1.2
+              v1.0.0
             </Typography>
+            <Box>
+              <TextField
+                sx={() => ({
+                  marginRight: 2,
+                  backgroundColor: colorScheme === "dark" ? "#424242" : "#fff",
+                })}
+                size="small"
+                label="Search"
+                variant="outlined"
+              />
+              <IconButton color="inherit" onClick={toggleColorScheme} title="Toggle color scheme">
+                {colorScheme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Box>
           </Toolbar>
         </AppBar>
         <Nav

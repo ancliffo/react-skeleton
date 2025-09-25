@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Drawer,
   Toolbar,
@@ -20,6 +20,7 @@ import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import ConstructionIcon from "@mui/icons-material/Construction";
 import { useColorScheme } from "../hooks/useColorScheme";
 
 const navItems = [
@@ -36,18 +37,26 @@ export function Nav(props: {
   drawerWidth: number;
 }) {
   const { colorScheme, toggleColorScheme } = useColorScheme();
+  const routerState = useRouterState();
+  const currentPathname = routerState.location.pathname;
 
   const drawer = (
     <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap>
-          Logo Here
+      <Toolbar sx={{ justifyContent: "center" }}>
+        <Typography textAlign="center" variant="h5" noWrap>
+          CrewFle
+          <ConstructionIcon fontSize="medium" sx={{ mb: -0.5 }} />
         </Typography>
       </Toolbar>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItemButton key={item.label} component={Link} to={item.link}>
+          <ListItemButton
+            selected={item.link === currentPathname}
+            key={item.label}
+            component={Link}
+            to={item.link}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItemButton>
