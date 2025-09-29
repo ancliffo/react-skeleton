@@ -3,11 +3,9 @@ import {
   Drawer,
   Toolbar,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   ListItemButton,
-  IconButton,
   Typography,
   Divider,
 } from "@mui/material";
@@ -18,10 +16,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ConstructionIcon from "@mui/icons-material/Construction";
-import { useColorScheme } from "../hooks/useColorScheme";
 
 const navItems = [
   { link: "/", label: "Home", icon: <HomeIcon /> },
@@ -36,7 +31,6 @@ export function Nav(props: {
   mobileOpen: boolean;
   drawerWidth: number;
 }) {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
   const routerState = useRouterState();
   const currentPathname = routerState.location.pathname;
 
@@ -70,17 +64,12 @@ export function Nav(props: {
           </ListItemIcon>
           <ListItemText primary="Change account" />
         </ListItemButton>
-        <ListItemButton onClick={toggleColorScheme}>
+        <ListItemButton>
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItemButton>
-        <ListItem>
-          <IconButton color="inherit" onClick={toggleColorScheme} title="Toggle color scheme">
-            {colorScheme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </ListItem>
       </List>
     </div>
   );

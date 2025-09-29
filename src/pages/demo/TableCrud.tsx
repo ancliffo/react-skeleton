@@ -2,7 +2,6 @@ import { Suspense, useMemo, useState } from "react";
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
-  // createRow,
   type MRT_ColumnDef,
   type MRT_Row,
   type MRT_TableOptions,
@@ -19,6 +18,7 @@ import {
 } from "@mui/material";
 import { useCreateUser, useDeleteUser, useGetUsers, useUpdateUser } from "../../hooks/userHooks";
 import type { User } from "../../types/userTypes";
+import type { ValidationError } from "../../types/errorTypes";
 import { usStates, positions, validateUser } from "../../utils";
 import { Edit, Delete } from "@mui/icons-material";
 import { TableCrudSkeleton } from "./TableCrudSkeleton";
@@ -38,48 +38,50 @@ export default function TableCrud() {
       {
         accessorKey: "firstName",
         header: "First Name",
-        muiEditTextFieldProps: {
-          required: true,
-          error: !!validationErrors?.firstName,
-          helperText: validationErrors?.firstName,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              firstName: undefined,
-            }),
-          //optionally add validation checking for onBlur or onChange
+        muiEditTextFieldProps: () => {
+          return {
+            required: true,
+            error: !!validationErrors?.firstName,
+            helperText: validationErrors?.firstName,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                firstName: undefined,
+              }),
+          };
         },
       },
       {
         accessorKey: "lastName",
         header: "Last Name",
-        muiEditTextFieldProps: {
-          required: true,
-          error: !!validationErrors?.lastName,
-          helperText: validationErrors?.lastName,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              lastName: undefined,
-            }),
+        muiEditTextFieldProps: () => {
+          return {
+            required: true,
+            error: !!validationErrors?.lastName,
+            helperText: validationErrors?.lastName,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                lastName: undefined,
+              }),
+          };
         },
       },
       {
         accessorKey: "email",
         header: "Email",
-        muiEditTextFieldProps: {
-          type: "email",
-          required: true,
-          error: !!validationErrors?.email,
-          helperText: validationErrors?.email,
-          //remove any previous validation errors when user focuses on the input
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              email: undefined,
-            }),
+        muiEditTextFieldProps: () => {
+          return {
+            type: "email",
+            required: true,
+            error: !!validationErrors?.email,
+            helperText: validationErrors?.email,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                email: undefined,
+              }),
+          };
         },
       },
       {
@@ -87,10 +89,17 @@ export default function TableCrud() {
         header: "State",
         editVariant: "select",
         editSelectOptions: usStates,
-        muiEditTextFieldProps: {
-          select: true,
-          error: !!validationErrors?.state,
-          helperText: validationErrors?.state,
+        muiEditTextFieldProps: () => {
+          return {
+            select: true,
+            error: !!validationErrors?.state,
+            helperText: validationErrors?.state,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                state: undefined,
+              }),
+          };
         },
       },
       {
@@ -98,10 +107,17 @@ export default function TableCrud() {
         header: "Position",
         editVariant: "select",
         editSelectOptions: positions,
-        muiEditTextFieldProps: {
-          select: true,
-          error: !!validationErrors?.position,
-          helperText: validationErrors?.position,
+        muiEditTextFieldProps: () => {
+          return {
+            select: true,
+            error: !!validationErrors?.position,
+            helperText: validationErrors?.position,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                position: undefined,
+              }),
+          };
         },
       },
     ],
@@ -129,8 +145,24 @@ export default function TableCrud() {
       return;
     }
     setValidationErrors({});
-    await createUser(values);
-    table.setCreatingRow(null); //exit creating mode
+    try {
+      await createUser(values);
+      table.setCreatingRow(null); // exit editing mode
+    } catch (error: unknown) {
+      // Handle server validation errors
+      // Type guard to check if it's a ValidationError
+      if (error instanceof Error && "validationErrors" in error) {
+        const validationError = error as ValidationError;
+        if (validationError.validationErrors) {
+          setValidationErrors(validationError.validationErrors);
+          return;
+        }
+      } else if (error instanceof Error) {
+        console.error("Failed to create user:", error.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
+    }
   };
 
   // UPDATE action
@@ -141,8 +173,24 @@ export default function TableCrud() {
       return;
     }
     setValidationErrors({});
-    await updateUser(values);
-    table.setEditingRow(null); //exit editing mode
+    try {
+      await updateUser(values);
+      table.setEditingRow(null); // exit editing mode
+    } catch (error: unknown) {
+      // Handle server validation errors
+      // Type guard to check if it's a ValidationError
+      if (error instanceof Error && "validationErrors" in error) {
+        const validationError = error as ValidationError;
+        if (validationError.validationErrors) {
+          setValidationErrors(validationError.validationErrors);
+          return;
+        }
+      } else if (error instanceof Error) {
+        console.error("Failed to update user:", error.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
+    }
   };
 
   // DELETE action
